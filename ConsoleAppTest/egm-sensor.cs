@@ -10,6 +10,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using abb.egm;
+using log4net;
 
 //////////////////////////////////////////////////////////////////////////
 // Sample program using protobuf-csharp-port 
@@ -60,12 +61,11 @@ namespace ConsoleAppTest
 {
     class Program
     {
+ 
         // listen on this port for inbound messages
         public static int _ipPortNumber = 6510;
         static void Main(string[] args)
         {
-
-
 
             Sensor s = new Sensor();
             s.Start();
@@ -77,6 +77,9 @@ namespace ConsoleAppTest
 
     class Sensor
     {
+        private static readonly ILog log = LogManager.GetLogger(typeof(Sensor));
+        private static bool boolFlag = true;
+
         private Thread _sensorThread = null;
         private UdpClient _udpServer = null;
         private bool _exitThread = false;
@@ -109,17 +112,23 @@ namespace ConsoleAppTest
                         EgmSensor sensorMessage = sensor.Build();
                         sensorMessage.WriteTo(memoryStream);
 
-                        // send the udp message to the robot
-                        int bytesSent = _udpServer.Send(memoryStream.ToArray(),
-                                                       (int)memoryStream.Length, remoteEP);
-                        if (bytesSent < 0)
+                        if(boolFlag)
                         {
-                            Console.WriteLine("Error send to robot");
+                            // send the udp message to the robot
+                            int bytesSent = _udpServer.Send(memoryStream.ToArray(),
+                                                           (int)memoryStream.Length, remoteEP);
+                            if (bytesSent < 0)
+                            {
+                                Console.WriteLine("Error send to robot");
+                            }
+                            else
+                            {
+                                Console.WriteLine("data send to robot");
+                            }
+                            //boolFlag = false;
                         }
-                        else
-                        {
-                            Console.WriteLine("data send to robot");
-                        }
+
+
                     }
                 }
             }
@@ -137,6 +146,7 @@ namespace ConsoleAppTest
             {
                 Console.WriteLine("No header in robot message");
             }
+            log.Debug(robot);
         }
 
         //////////////////////////////////////////////////////////////////////////
@@ -161,9 +171,9 @@ namespace ConsoleAppTest
             //    .SetY(11.1)
             //    .SetZ(1000);
 
-            pc.SetX(10)
+            pc.SetX(0)
     .SetY(0)
-    .SetZ(0);
+    .SetZ(-10);
 
             pq.SetU0(0.32557)
                 .SetU1(0.0)
@@ -177,7 +187,7 @@ namespace ConsoleAppTest
             sensor.SetPlanned(planned); // bind planned to sensor object
 
             Console.WriteLine("CreateSensorMessage");
-
+            log.Debug(sensor);
             return;
         }
 
