@@ -59,12 +59,12 @@ using log4net;
 //
 namespace ConsoleAppTest
 {
-    class Program
+    class EGM
     {
  
         // listen on this port for inbound messages
         public static int _ipPortNumber = 6510;
-        static void Main(string[] args)
+        static void Main2(string[] args)
         {
 
             Sensor s = new Sensor();
@@ -88,8 +88,8 @@ namespace ConsoleAppTest
         public void SensorThread()
         {
             // create an udp client and listen on any address and the port _ipPortNumber
-            _udpServer = new UdpClient(Program._ipPortNumber);
-            var remoteEP = new IPEndPoint(IPAddress.Any, Program._ipPortNumber);
+            _udpServer = new UdpClient(EGM._ipPortNumber);
+            var remoteEP = new IPEndPoint(IPAddress.Any, EGM._ipPortNumber);
 
             while (_exitThread == false)
             {

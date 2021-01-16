@@ -22,7 +22,7 @@ namespace ConsoleAppTest
         string md5End = "h";
         string encryptionKey = string.Empty;
 
-        static void Main2(string[] args)
+        static void Main5(string[] args)
         {
             EncryptionHelper eh = new EncryptionHelper();
             string strori = "1600-515088";
