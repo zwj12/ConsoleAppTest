@@ -30,8 +30,6 @@ namespace ConsoleAppTest.MongoDBLearn
 
             collection.InsertOne(document);
 
-            A a = new A { B = 1, C = "nohao" };
-            List<int> d = new List<int> { 1, 2 };
 
         }
 
@@ -42,23 +40,5 @@ namespace ConsoleAppTest.MongoDBLearn
 
     }
 
-    class A
-    {
-        public int B{get;set ;}
-
-        public string  C{ get; set; }
-
-        public A()
-        {
-
-        }
-
-        public A(int b)
-        {
-            this.B = b;
-
-        }
-
-    }
 
 }

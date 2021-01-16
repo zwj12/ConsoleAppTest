@@ -10,6 +10,7 @@ using NLog;
 using ConsoleAppTest.Encryption;
 using ConsoleAppTest.MongoDBLearn;
 using MongoDB.Bson;
+using ConsoleAppTest.JsonLearn;
 
 namespace ConsoleAppTest
 {
@@ -26,8 +27,12 @@ namespace ConsoleAppTest
 
         static void Main(string[] args)
         {
-            MongoDBTest mongoDBTest = new MongoDBTest();
-            mongoDBTest.TestData();
+            JsonTest jsonTest = new JsonTest();
+            jsonTest.TestData();
+
+
+            //MongoDBTest mongoDBTest = new MongoDBTest();
+            //mongoDBTest.TestData();
 
             var y = new BsonDocument {
                 { "name", "MongoDB" }
