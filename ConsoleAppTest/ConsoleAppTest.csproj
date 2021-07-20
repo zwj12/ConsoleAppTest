@@ -153,9 +153,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Async\AsyncAwait.cs" />
+    <Compile Include="AttributeTest\AttributeTest.cs" />
+    <Compile Include="CRC\CRCAlgorithm.cs" />
     <Compile Include="Encryption\Certificate.cs" />
     <Compile Include="Encryption\CertInfo.cs" />
     <Compile Include="ImageContourExtraction\ICETest.cs" />
+    <Compile Include="Interview\A.cs" />
+    <Compile Include="Interview\X.cs" />
     <Compile Include="JsonLearn\JsonTest.cs" />
     <Compile Include="Log\Bar.cs" />
     <Compile Include="ImageContourExtraction\BitmapOutline.cs" />

@@ -24,6 +24,10 @@ namespace ConsoleAppTest.JsonLearn
             string jsonString = JsonSerializer.Serialize(weatherForecast, jsonSerializerOptions);
             Console.WriteLine(jsonString);
             File.WriteAllText("test.json", jsonString);
+
+            jsonString = File.ReadAllText("test2.json");
+            WeatherForecast weatherForecast2 = new WeatherForecast();
+            weatherForecast2 = JsonSerializer.Deserialize<WeatherForecast>(jsonString);
         }
     }
 
@@ -32,5 +36,37 @@ namespace ConsoleAppTest.JsonLearn
         public DateTimeOffset Date { get; set; }
         public int TemperatureCelsius { get; set; }
         public string Summary { get; set; }
+
+        private Pos referencePointX = new Pos(1, 2, 3);
+        public Pos ReferencePointX
+        {
+            get
+            {
+                return referencePointX;
+            }
+            set { 
+                referencePointX.X = value.X;
+                referencePointX.Y = value.Y;
+                referencePointX.Z = value.Z;
+            }
+
+        }
+
+    }
+
+
+    public class Pos
+    {
+        public float X { get; set; }
+        public float Y { get; set; }
+        public float Z { get; set; }
+
+        public Pos(float x, float y, float z)
+        {
+            this.X = x;
+            this.Y = y;
+            this.Z = z;
+        }
+
     }
 }

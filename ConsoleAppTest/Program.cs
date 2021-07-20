@@ -11,11 +11,17 @@ using ConsoleAppTest.Encryption;
 using ConsoleAppTest.MongoDBLearn;
 using MongoDB.Bson;
 using ConsoleAppTest.JsonLearn;
+using ConsoleAppTest.CRC;
 
 namespace ConsoleAppTest
 {
-    class Program
+    public enum RobotCategory
     {
+        ROB1 = 1,
+        ROB2 = 2,
+    }
+    class Program
+    {        
         public static ManualResetEvent StopEventHandle;
         public static AutoResetEvent EngineIsReady;
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
@@ -25,8 +31,20 @@ namespace ConsoleAppTest
             Console.WriteLine("printstrA");
         }
 
-        static void Main(string[] args)
+        static void Main1(string[] args)
         {
+            RobotCategory robotCategory = RobotCategory.ROB1;
+            Console.WriteLine(string.Format("{0}--{1}Scan.json", robotCategory,1.ToString().PadLeft(4,'0')));
+            
+            byte[] data= new byte[3] ;
+            data[0] = 13;
+
+            CRCAlgorithm cRCAlgorithm = new CRCAlgorithm();
+            cRCAlgorithm.ModBusCRC16(ref data, 1);
+            Console.ReadKey();
+            return;
+
+
             JsonTest jsonTest = new JsonTest();
             jsonTest.TestData();
 
