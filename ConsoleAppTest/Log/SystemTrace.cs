@@ -15,12 +15,32 @@ namespace ConsoleAppTest.Log
         {
             if (textWriterTraceListener == null)
             {
-                textWriterTraceListener = new TextWriterTraceListener(@"D:\Michael.log");
                 //System.Diagnostics.Trace.Listeners.Clear();
-                Trace.AutoFlush = true;
+
+                textWriterTraceListener = new TextWriterTraceListener(@"D:\Michael.log");
+                //textWriterTraceListener.Filter = new EventTypeFilter(SourceLevels.Verbose);
                 Trace.Listeners.Add(textWriterTraceListener);
+
+                //EventLogTraceListener myTraceListener = new EventLogTraceListener("myEventLogSource1");
+                //Trace.Listeners.Add(myTraceListener);
+
+                Trace.AutoFlush = true;
             }
+            Trace.TraceInformation("TraceInformation");
+            Trace.TraceError("TraceError");
+            Trace.TraceWarning("TraceWarning");
+            Trace.WriteLine("WriteLine", "Category");
             Trace.WriteLine(DateTime.Now.ToString() + " " + strLog);
+        }
+
+        private static void WriteLog(string strLog)
+        {
+            Trace.WriteLine(DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss ") + strLog + Environment.NewLine);
+        }
+
+        private static void WriteLog(Exception ex)
+        {
+            Trace.WriteLine(DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss ") + ex.Message + Environment.NewLine + "Source:" + ex.Source + Environment.NewLine + ex.StackTrace + Environment.NewLine);
         }
     }
 }

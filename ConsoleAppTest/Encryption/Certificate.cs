@@ -18,6 +18,27 @@ namespace ConsoleAppTest.Encryption
         private static string originalFile = "TestData.txt";
         private static string encryptedFile = "TestData.enc";
 
+        public void GetCert()
+        {
+            string Thumbprint = "9236bda1082d64a513341c8b49b286156f1ade2e";
+            X509Store store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
+            store.Open(OpenFlags.ReadOnly | OpenFlags.OpenExistingOnly);
+            X509Certificate2Collection certificates = store.Certificates.Find(X509FindType.FindByThumbprint, Thumbprint, false);
+            //certificates = store.Certificates;
+            foreach (var certificate in certificates)
+            {
+                Console.WriteLine("{0}, {1}, {2}" ,certificate.SerialNumber, certificate.Subject, certificate.GetPublicKeyString()); 
+            }
+
+
+        }
+
+        public void GetFileDigitalSignatures()
+        {
+            string filename = @"D:\\VisionAnalyzeru.exe";
+            X509Certificate cert = X509Certificate.CreateFromSignedFile(filename);
+        }
+
         static void TestCert(string[] args)
         {
 

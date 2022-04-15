@@ -10,7 +10,7 @@ namespace ConsoleAppTest.AttributeTest
     [Myself("MyClass", Author = "Me")]
     class AttributeTest
     {
-        static void Main(string[] args)
+        static void Main2(string[] args)
         {
             string str0 = "Michael";
             string str = "Hello World!";

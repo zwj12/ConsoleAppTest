@@ -10,11 +10,13 @@ namespace ConsoleAppTest.Async
 {
     class AsyncAwait
     {
+        public static int i = 0;
 
-        static void Main1(string[] args)
+        static void Main4(string[] args)
         {
             Console.WriteLine("111 balabala. My Thread ID is :" + Thread.CurrentThread.ManagedThreadId);
-            AsyncMethod();
+            //Task t = AsyncMethod();
+            AsyncMethod2();
             Console.WriteLine("222 balabala. My Thread ID is :" + Thread.CurrentThread.ManagedThreadId);
             Console.ReadKey();
         }
@@ -25,7 +27,9 @@ namespace ConsoleAppTest.Async
             Console.WriteLine("1");
             Thread.Sleep(500);
             Console.WriteLine("2");
-            var ResultFromTimeConsumingMethod = TimeConsumingMethod();
+            Task<string> ResultFromTimeConsumingMethod = TimeConsumingMethod();
+            //string Result1 = ResultFromTimeConsumingMethod.Result;
+            //Console.WriteLine("Result1");
             string Result = await ResultFromTimeConsumingMethod + " + AsyncMethod. My Thread ID is :" + Thread.CurrentThread.ManagedThreadId;
             Console.WriteLine(Result);
             //返回值是Task的函数可以不用return
@@ -47,6 +51,22 @@ namespace ConsoleAppTest.Async
         }
 
 
+        static private async void AsyncMethod2()
+        {
+            Console.WriteLine("1");
+            await TimeConsumingMethod();    
+            Console.WriteLine("2");  
+        }
+
+        static private void TimeConsumingMethod2()
+        {
+            Console.WriteLine("Helo I am TimeConsumingMethod. My Thread ID is :" + Thread.CurrentThread.ManagedThreadId);
+            Thread.Sleep(5000);
+            Console.WriteLine("Helo I am TimeConsumingMethod after Sleep(5000). My Thread ID is :" + Thread.CurrentThread.ManagedThreadId);
+
+        }
+
+
         static void Main4()
         {
             Start();
@@ -65,5 +85,48 @@ namespace ConsoleAppTest.Async
             string str = result.Result;
             return str.Length;
         }
+
+        public async Task TestAsyncReturnVariable()
+        {
+              var str=  await DemoAsync();
+              Console.WriteLine("TestAsyncReturnVariable: " + str);
+        }
+        
+        public async  Task<string> DemoAsync()
+        {
+            await Task.Run(() => { i = 45; Thread.Sleep(3000); i = 46; });
+            Console.WriteLine("await end");
+            i = 47;
+            Thread.Sleep(3000);
+            Console.WriteLine("DemoAsync end");
+            i = 48;
+            return "Hello World"; 
+        }
+
+        public void CreateTask()
+        {
+            //1.new方式实例化一个Task，需要通过Start方法启动
+            Task task = new Task(() =>
+            {
+                Thread.Sleep(100);
+                Console.WriteLine($"hello, task1的线程ID为{Thread.CurrentThread.ManagedThreadId}");
+            });
+            task.Start();
+
+            //2.Task.Factory.StartNew(Action action)创建和启动一个Task
+            Task task2 = Task.Factory.StartNew(() =>
+            {
+                Thread.Sleep(100);
+                Console.WriteLine($"hello, task2的线程ID为{ Thread.CurrentThread.ManagedThreadId}");
+            });
+
+            //3.Task.Run(Action action)将任务放在线程池队列，返回并启动一个Task
+            Task task3 = Task.Run(() =>
+            {
+                Thread.Sleep(100);
+                Console.WriteLine($"hello, task3的线程ID为{ Thread.CurrentThread.ManagedThreadId}");
+            });
+        }
+
     }
 }
