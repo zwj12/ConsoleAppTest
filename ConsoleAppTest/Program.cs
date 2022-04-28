@@ -19,6 +19,10 @@ using System.Diagnostics;
 using ConsoleAppTest.MultiThread;
 using ConsoleAppTest.XML;
 using System.Runtime.CompilerServices;
+using ConsoleAppTest.Log;
+using ConsoleAppTest.Lock;
+using System.Configuration;
+using ConsoleAppTest.Configuration;
 
 namespace ConsoleAppTest
 {
@@ -73,10 +77,161 @@ namespace ConsoleAppTest
             c=0x08
         }
 
-
-    static async Task Main(string[] args)
+        class Person
         {
+            public Person(string name)
+            {
+                Name = name;
+            }
+            public string Name { get; set; }
+        }
 
+        static List<Person> _people = new List<Person>();
+
+
+        private static void MakePerson()
+        {
+            int i = 10;
+            int j;
+            j = i;
+            Person c = new Person("Bob");
+            _people.Add(c);
+        }
+
+        private static void DoSomething()
+        {
+            // more processing
+            Console.WriteLine("done");
+        }
+
+        public static async void DoWork()
+        {
+            Console.WriteLine("Static thread procedure. Data='{0}'");
+        }
+
+        static void IntializeConfigurationFile()
+        {
+            // Create a set of unique key/value pairs to store in
+            // the appSettings section of an auxiliary configuration
+            // file.
+            string time1 = String.Concat(DateTime.Now.ToLongDateString(),
+                                   " ", DateTime.Now.ToLongTimeString());
+
+            string time2 = String.Concat(DateTime.Now.ToLongDateString(),
+                                   " ", new DateTime(2009, 06, 30).ToLongTimeString());
+
+            string[] buffer = {"<appSettings>",
+        "<add key='AuxAppStg0' value='" + time1 + "'/>",
+        "<add key='AuxAppStg1' value='" + time2 + "'/>",
+        "</appSettings>"};
+
+            // Create an auxiliary configuration file and store the
+            // appSettings defined before.
+            // Note creating a file at run-time is just for demo 
+            // purposes to run this example.
+            File.WriteAllLines("auxiliaryFile.config", buffer);
+
+            // Get the current configuration associated
+            // with the application.
+            System.Configuration.Configuration config =
+               ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+
+            // Associate the auxiliary with the default
+            // configuration file. 
+            System.Configuration.AppSettingsSection appSettings = config.AppSettings;
+            appSettings.File = "auxiliaryFile.config";
+
+            // Save the configuration file.
+            config.Save(ConfigurationSaveMode.Modified);
+
+            // Force a reload in memory of the 
+            // changed section.
+            ConfigurationManager.RefreshSection("appSettings");
+        }
+
+        static void Main(string[] args)
+        {
+            //Config.CreateAppSettings();
+
+            //return;
+
+            //IntializeConfigurationFile();
+
+            //return;
+
+            DateTime d1 = DateTime.Parse("04/26/22 16:21:37");
+            //var appSettings = ConfigurationManager.AppSettings;
+            //var x = appSettings[0];
+            //appSettings["Setting1"] = "Hello";
+
+            //var configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+
+            ExeConfigurationFileMap configFileMap = new ExeConfigurationFileMap();
+            configFileMap.ExeConfigFilename = @"Configuration\Michael.Config";
+            configFileMap.LocalUserConfigFilename = @"PickMasterUtility.exe.config";
+            configFileMap.RoamingUserConfigFilename = @"PickMasterUtility.exe.config";
+         // var configFile = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.PerUserRoamingAndLocal);
+            var configFile = ConfigurationManager.OpenExeConfiguration( ConfigurationUserLevel.PerUserRoamingAndLocal);
+            CustomSection customSection = configFile.GetSection("CustomSection") as CustomSection;
+            var settings = configFile.AppSettings.Settings;
+            customSection.MaxUsers = 998;
+            configFile.Save(ConfigurationSaveMode.Modified, true);
+            ConfigurationManager.RefreshSection(customSection.SectionInformation.Name);
+
+            Console.ReadKey();
+
+            return;
+
+
+            configFile.AppSettings.SectionInformation.AllowExeDefinition = ConfigurationAllowExeDefinition.MachineToRoamingUser;
+                 if (settings["Setting3"] == null)
+            {
+                settings.Add("Setting3", "Hello World5");
+            }
+            else
+            {
+                settings["Setting3"].Value = "Hello World5";
+            }
+
+            configFile.Save(ConfigurationSaveMode.Modified, true);
+            ConfigurationManager.RefreshSection(configFile.AppSettings.SectionInformation.Name);
+
+            Console.ReadKey();
+
+            return;
+
+            //List<Thread> threads = new List<Thread>();
+            //for (int i = 0; i < 5; i++)
+            //{
+            //    Thread thread = new Thread(LockAsync.WaitAync);
+            //    threads.Add(thread);
+            //    thread.Start();
+            //}
+            //foreach (var item in threads)
+            //{
+            //    item.Join();
+            //}
+
+            //int ixt = LockAsync._mutex.CurrentCount;
+
+            //LockAsync.WaitAync(1);
+            //LockAsync.WaitAync(2);
+            //LockAsync.WaitAync(3);
+            //LockAsync.WaitAync(4);
+            //LockAsync.WaitAync(5);
+
+            LockAsync.Mainx();
+
+            Console.ReadKey();
+
+            return;
+
+
+            int k1 = 17;
+            k1++;
+            MakePerson();
+            DoSomething();
+            return;
 
             Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
             Trace.AutoFlush = true;
@@ -84,8 +239,12 @@ namespace ConsoleAppTest
             Trace.WriteLine("Entering Main");
             Console.WriteLine("Hello World.");
             Trace.WriteLine("Exiting Main");
-           // Trace.Unindent();
+            // Trace.Unindent();
 
+
+            SystemTrace.WriteMichaelLog("Entering Main");
+            Console.WriteLine("Hello World.");
+            SystemTrace.WriteMichaelLog("Exiting Main");
 
             Console.ReadKey();
             return;

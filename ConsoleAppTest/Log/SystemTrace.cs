@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace ConsoleAppTest.Log
 {
-    class SystemTrace
+    public static class SystemTrace
     {
         private static TextWriterTraceListener textWriterTraceListener;
 
-        public void WriteMichaelLog(string strLog)
+        public static void WriteMichaelLog(string strLog)
         {
             if (textWriterTraceListener == null)
             {
@@ -26,10 +26,10 @@ namespace ConsoleAppTest.Log
 
                 Trace.AutoFlush = true;
             }
-            Trace.TraceInformation("TraceInformation");
-            Trace.TraceError("TraceError");
-            Trace.TraceWarning("TraceWarning");
-            Trace.WriteLine("WriteLine", "Category");
+            //Trace.TraceInformation("TraceInformation");
+            //Trace.TraceError("TraceError");
+            //Trace.TraceWarning("TraceWarning");
+            //Trace.WriteLine("WriteLine", "Category");
             Trace.WriteLine(DateTime.Now.ToString() + " " + strLog);
         }
 
