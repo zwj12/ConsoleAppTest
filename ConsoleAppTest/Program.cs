@@ -23,6 +23,10 @@ using ConsoleAppTest.Log;
 using ConsoleAppTest.Lock;
 using System.Configuration;
 using ConsoleAppTest.Configuration;
+using System.Net.Sockets;
+using System.Net;
+using System.Text.RegularExpressions;
+using ConsoleAppTest.Interop;
 
 namespace ConsoleAppTest
 {
@@ -149,51 +153,190 @@ namespace ConsoleAppTest
             ConfigurationManager.RefreshSection("appSettings");
         }
 
+        public static void CreateAppSettings()
+        {
+            // Get the application configuration file.
+            System.Configuration.Configuration config =
+              ConfigurationManager.OpenExeConfiguration(
+                    ConfigurationUserLevel.None);
+
+            string sectionName = "appSettings";
+
+            // Add an entry to appSettings.
+            int appStgCnt =
+                ConfigurationManager.AppSettings.Count;
+            string newKey = "NewKey" + appStgCnt.ToString();
+
+            string newValue = DateTime.Now.ToLongDateString() +
+              " " + DateTime.Now.ToLongTimeString();
+
+            config.AppSettings.Settings.Add(newKey, newValue);
+
+            // Save the configuration file.
+            //config.Save(ConfigurationSaveMode.Modified);
+
+            // Force a reload of the changed section. This 
+            // makes the new values available for reading.
+           ConfigurationManager.RefreshSection(sectionName);
+
+            // Get the AppSettings section.
+            AppSettingsSection appSettingSection =
+              (AppSettingsSection)config.GetSection(sectionName);
+
+           
+
+            Console.WriteLine();
+            Console.WriteLine("Using GetSection(string).");
+            Console.WriteLine("AppSettings section:");
+            Console.WriteLine(
+            appSettingSection.Settings["Setting3"].Value);
+        }
+
         static void Main(string[] args)
         {
-            //Config.CreateAppSettings();
+            Rick.SortFile.SortFilesByName();
+            return;
 
-            //return;
 
-            //IntializeConfigurationFile();
+            Task task1 = Task.Run(
+                          () =>
+                          {
+                              Thread.Sleep(3000);
+                              Console.WriteLine($"Task.Run 1 方式创建一个task，线程ID为{Thread.CurrentThread.ManagedThreadId}");
+                          });
 
-            //return;
+            Task task2 = Task.Run(
+                () =>
+                {
+                    Thread.Sleep(2000);
+                    Console.WriteLine($"Task.Run 2 方 式创建一个task，线程ID为{Thread.CurrentThread.ManagedThreadId}");
+                });
 
-            DateTime d1 = DateTime.Parse("04/26/22 16:21:37");
-            //var appSettings = ConfigurationManager.AppSettings;
-            //var x = appSettings[0];
-            //appSettings["Setting1"] = "Hello";
-
-            //var configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-
-            ExeConfigurationFileMap configFileMap = new ExeConfigurationFileMap();
-            configFileMap.ExeConfigFilename = @"Configuration\Michael.Config";
-            configFileMap.LocalUserConfigFilename = @"PickMasterUtility.exe.config";
-            configFileMap.RoamingUserConfigFilename = @"PickMasterUtility.exe.config";
-         // var configFile = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.PerUserRoamingAndLocal);
-            var configFile = ConfigurationManager.OpenExeConfiguration( ConfigurationUserLevel.PerUserRoamingAndLocal);
-            CustomSection customSection = configFile.GetSection("CustomSection") as CustomSection;
-            var settings = configFile.AppSettings.Settings;
-            customSection.MaxUsers = 998;
-            configFile.Save(ConfigurationSaveMode.Modified, true);
-            ConfigurationManager.RefreshSection(customSection.SectionInformation.Name);
-
+            Task task3 = Task.Run(
+                () =>
+                {
+                    Thread.Sleep(1000);
+                    Console.WriteLine($"Task.Run 3方式创建一个task，线程ID为{Thread.CurrentThread.ManagedThreadId}");
+                });
             Console.ReadKey();
 
             return;
 
 
-            configFile.AppSettings.SectionInformation.AllowExeDefinition = ConfigurationAllowExeDefinition.MachineToRoamingUser;
-                 if (settings["Setting3"] == null)
+            InteropTest.MarshalTest();
+            Console.ReadKey();
+            return;
+
+            //DateTime TimeStamp = DateTime.Now;
+            //DateTime TimeStamp = DateTime.Parse("2022-05-14T11:54:18");
+            //Console.WriteLine(TimeStamp.ToString("s"));
+            //Console.WriteLine(TimeStamp.ToString("o"));
+            //Console.WriteLine(TimeStamp.ToString("O"));
+
+            string dllDirectory = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            System.IO.DirectoryInfo dllDirectoryInfo = new System.IO.DirectoryInfo(dllDirectory);
+            System.IO.DirectoryInfo ZenonProjectDirectoryInfo = dllDirectoryInfo.Parent.Parent.Parent;
+            Console.WriteLine(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            Console.WriteLine(dllDirectory);
+            Console.WriteLine(dllDirectoryInfo.FullName);
+
+            System.IO.DirectoryInfo dllDirectoryInfoTest = new System.IO.DirectoryInfo(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            Console.WriteLine(dllDirectoryInfoTest.FullName);
+
+
+            Console.ReadKey();
+            return;
+            string server = null;
+
+            // Define a regular expression to parse user's input.
+            // This is a security check. It allows only
+            // alphanumeric input string between 2 to 40 character long.
+            Regex rex = new Regex(@"^[a-zA-Z]\w{1,39}$");
+
+            if (args.Length < 1)
             {
-                settings.Add("Setting3", "Hello World5");
+                // If no server name is passed as an argument to this program, use the current
+                // server name as default.
+                server = Dns.GetHostName();
+                Console.WriteLine("Using current host: " + server);
             }
             else
             {
-                settings["Setting3"].Value = "Hello World5";
+                server = args[0];
+                server = "www.baidu.com";
+                if (!(rex.Match(server)).Success)
+                {
+                    Console.WriteLine("Input string format not allowed.");
+                    //return;
+                }
             }
 
-            configFile.Save(ConfigurationSaveMode.Modified, true);
+            server = "www.baidu.com";
+
+            // Get the list of the addresses associated with the requested server.
+            IPAddresses(server);
+
+            // Get additional address information.
+            IPAddressAdditionalInfo();
+
+            Console.ReadKey();
+
+            return;
+
+            string sstr = null;
+
+            string sstr1 = sstr ?? "hello";
+            string sstr2 = sstr1 ?? "hello2";
+            ExeConfigurationFileMap configFileMap = new ExeConfigurationFileMap();
+            configFileMap.ExeConfigFilename = @"Configuration\Michael.Config";
+            configFileMap.LocalUserConfigFilename = @"Configuration\MichaelLocal.Config";
+            configFileMap.RoamingUserConfigFilename = @"Configuration\MichaelRoaming.Config";
+
+            //var configFile = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            var configFile = ConfigurationManager.OpenMappedExeConfiguration(configFileMap,ConfigurationUserLevel.None);
+            CustomSection customSection = configFile.GetSection("CustomSection") as CustomSection;
+            customSection.MaxUsers = 111;
+            configFile.Save(ConfigurationSaveMode.Modified);
+            ConfigurationManager.RefreshSection("CustomSection");
+
+            //configFile = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.None);
+            customSection = configFile.GetSection("CustomSection") as CustomSection;
+
+            ConfigurationManager.RefreshSection("CustomSection");
+            long ixd = customSection.MaxUsers;
+
+            //var configFileRoaming = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoaming);
+            var configFileRoaming = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.PerUserRoaming);
+            CustomSection customSectionRoaming = configFileRoaming.GetSection("CustomSection") as CustomSection;
+            customSectionRoaming.MaxUsers = 22;   
+            configFileRoaming.Save(ConfigurationSaveMode.Modified);
+
+            //var configFileLocal2 = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal);
+            //CustomSection customSectionLocal2 = configFileLocal2.GetSection("CustomSection") as CustomSection;
+           var customSectionLocal2 = ConfigurationManager.GetSection("CustomSection") as CustomSection;
+            //var customSectionLocal3 = ConfigurationManager.GetSection("CustomSection") as CustomSection;
+
+            //var configFileLocal = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal);
+            ////var configFileLocal = ConfigurationManager.OpenMappedExeConfiguration(configFileMap, ConfigurationUserLevel.PerUserRoamingAndLocal);
+            //CustomSection customSectionLocal = configFileLocal.GetSection("CustomSection") as CustomSection;
+            //customSectionLocal.MaxUsers = 35669;
+            //configFileLocal.Save(ConfigurationSaveMode.Modified);
+
+            //customSectionLocal2.MaxUsers = 12;
+            ConfigurationManager.RefreshSection("CustomSection");
+
+            var customSectionLocal3 = ConfigurationManager.GetSection("CustomSection") as CustomSection;
+            long ixds= customSectionLocal3.MaxUsers;
+
+            //ConfigurationManager.RefreshSection(appSettings.SectionInformation.Name);
+            //ConfigurationManager.RefreshSection(customSectionLocal.SectionInformation.Name);   
+
+            //  Console.ReadKey();
+
+            return;
+
+
+            configFile.Save(ConfigurationSaveMode.Modified);
             ConfigurationManager.RefreshSection(configFile.AppSettings.SectionInformation.Name);
 
             Console.ReadKey();
@@ -277,7 +420,7 @@ namespace ConsoleAppTest
             return;
 
             Console.WriteLine("Main Start");
-            Task task1=  TaskTest.TestWithOutawaitAsync();
+            Task task11=  TaskTest.TestWithOutawaitAsync();
             Console.WriteLine("Main End");
             
 
@@ -499,6 +642,85 @@ namespace ConsoleAppTest
             Console.ReadKey();
 
             // Go to http://aka.ms/dotnet-get-started-console to continue learning how to build a console app! 
+        }
+
+        private static void IPAddresses(string server)
+        {
+            try
+            {
+                System.Text.ASCIIEncoding ASCII = new System.Text.ASCIIEncoding();
+
+                // Get server related information.
+                IPHostEntry heserver = Dns.GetHostEntry(server);
+
+                // Loop on the AddressList
+                foreach (IPAddress curAdd in heserver.AddressList)
+                {
+
+
+                    // Display the type of address family supported by the server. If the
+                    // server is IPv6-enabled this value is: InterNetworkV6. If the server
+                    // is also IPv4-enabled there will be an additional value of InterNetwork.
+                    Console.WriteLine("AddressFamily: " + curAdd.AddressFamily.ToString());
+
+                    // Display the ScopeId property in case of IPV6 addresses.
+                    if (curAdd.AddressFamily.ToString() == ProtocolFamily.InterNetworkV6.ToString())
+                        Console.WriteLine("Scope Id: " + curAdd.ScopeId.ToString());
+
+
+                    // Display the server IP address in the standard format. In
+                    // IPv4 the format will be dotted-quad notation, in IPv6 it will be
+                    // in in colon-hexadecimal notation.
+                    Console.WriteLine("Address: " + curAdd.ToString());
+
+                    // Display the server IP address in byte format.
+                    Console.Write("AddressBytes: ");
+
+                    Byte[] bytes = curAdd.GetAddressBytes();
+                    for (int i = 0; i < bytes.Length; i++)
+                    {
+                        Console.Write(bytes[i]);
+                    }
+
+                    Console.WriteLine("\r\n");
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[DoResolve] Exception: " + e.ToString());
+            }
+        }
+
+        // This IPAddressAdditionalInfo displays additional server address information.
+        private static void IPAddressAdditionalInfo()
+        {
+            try
+            {
+                // Display the flags that show if the server supports IPv4 or IPv6
+                // address schemas.
+                Console.WriteLine("\r\nSupportsIPv4: " + Socket.SupportsIPv4);
+                Console.WriteLine("SupportsIPv6: " + Socket.SupportsIPv6);
+
+                if (Socket.SupportsIPv6)
+                {
+                    // Display the server Any address. This IP address indicates that the server
+                    // should listen for client activity on all network interfaces.
+                    Console.WriteLine("\r\nIPv6Any: " + IPAddress.IPv6Any.ToString());
+
+                    // Display the server loopback address.
+                    Console.WriteLine("IPv6Loopback: " + IPAddress.IPv6Loopback.ToString());
+
+                    // Used during autoconfiguration first phase.
+                    Console.WriteLine("IPv6None: " + IPAddress.IPv6None.ToString());
+
+                    Console.WriteLine("IsLoopback(IPv6Loopback): " + IPAddress.IsLoopback(IPAddress.IPv6Loopback));
+                }
+                Console.WriteLine("IsLoopback(Loopback): " + IPAddress.IsLoopback(IPAddress.Loopback));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[IPAddresses] Exception: " + e.ToString());
+            }
         }
     }
 
