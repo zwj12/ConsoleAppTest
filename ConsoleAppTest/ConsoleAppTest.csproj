@@ -243,6 +243,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.IO.Pipelines, Version=4.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.Pipelines.4.5.2\lib\netstandard2.0\System.IO.Pipelines.dll</HintPath>
     </Reference>
@@ -344,6 +345,7 @@
     <Compile Include="Configuration\Config.cs" />
     <Compile Include="Configuration\CustomSection.cs" />
     <Compile Include="CRC\CRCAlgorithm.cs" />
+    <Compile Include="Encryption\AESEncryption.cs" />
     <Compile Include="Encryption\Certificate.cs" />
     <Compile Include="Encryption\CertInfo.cs" />
     <Compile Include="ImageContourExtraction\ICETest.cs" />
