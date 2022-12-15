@@ -73,14 +73,7 @@ namespace ConsoleAppTest
     {
         public static void Main(string[] args)
         {
-            string str = "abc123assdfds12432134sdfdsf";
-            Regex reg = new Regex(@"[0-9]+");
-            Match mc = reg.Match(str);
-          string str2=  reg.Replace(str, "zhuweijin",1);
-            Console.WriteLine(str);
-            Console.WriteLine(str2);
             SortFile.SortFilesByName();
-
             Console.ReadKey();
 
         }

@@ -384,6 +384,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings1.settings</DependentUpon>
     </Compile>
+    <Compile Include="Socket\SocketClient.cs" />
     <Compile Include="WebApi\AController.cs" />
     <Compile Include="WebApi\Child\BController.cs" />
     <Compile Include="WebApi\HttpController.cs" />

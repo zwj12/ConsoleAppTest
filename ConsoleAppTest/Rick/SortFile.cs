@@ -16,37 +16,37 @@ namespace ConsoleAppTest.Rick
 
         public static void SortFilesByName()
         {
-            DirectoryInfo TheFolder = new DirectoryInfo(@"E:\一千零一夜");
+            DirectoryInfo TheFolder = new DirectoryInfo(@"E:\人体大冒险");
             DirectoryInfo NewFolder = Directory.CreateDirectory(@"E:\MP3New");
 
-            //foreach (FileInfo NextFile in TheFolder.GetFiles())
-            //{
-            //    string strNewFileName = "";
-            //    Match mc = reg.Match(NextFile.Name);
-            //    if (mc.Length == 1)
-            //    {
-            //        strNewFileName = reg.Replace(NextFile.Name, "000" + mc.Value, 1);
-            //        Console.WriteLine(strNewFileName);
-            //        File.Move(NextFile.FullName, Path.Combine(NextFile.Directory.FullName, strNewFileName));
-            //    }
-            //    else if (mc.Length == 2)
-            //    {
-            //        strNewFileName = reg.Replace(NextFile.Name, "00" + mc.Value, 1);
-            //        Console.WriteLine(strNewFileName);
-            //        File.Move(NextFile.FullName, Path.Combine(NextFile.Directory.FullName, strNewFileName));
-            //    }
-            //    else if (mc.Length == 3)
-            //    {
-            //        strNewFileName = reg.Replace(NextFile.Name, "0" + mc.Value, 1);
-            //        Console.WriteLine(strNewFileName);
-            //        File.Move(NextFile.FullName, Path.Combine(NextFile.Directory.FullName, strNewFileName));
-            //    }
-            //    else
-            //    {
-            //        //File.Move(NextFile.FullName, Path.GetFileNameWithoutExtension(NextFile.FullName) +".mp3");
-            //    }
+            foreach (FileInfo NextFile in TheFolder.GetFiles())
+            {
+                string strNewFileName = "";
+                Match mc = reg.Match(NextFile.Name);
+                if (mc.Length == 1)
+                {
+                    strNewFileName = reg.Replace(NextFile.Name, "000" + mc.Value, 1);
+                    Console.WriteLine(strNewFileName);
+                    File.Move(NextFile.FullName, Path.Combine(NextFile.Directory.FullName, strNewFileName));
+                }
+                else if (mc.Length == 2)
+                {
+                    strNewFileName = reg.Replace(NextFile.Name, "00" + mc.Value, 1);
+                    Console.WriteLine(strNewFileName);
+                    File.Move(NextFile.FullName, Path.Combine(NextFile.Directory.FullName, strNewFileName));
+                }
+                else if (mc.Length == 3)
+                {
+                    strNewFileName = reg.Replace(NextFile.Name, "0" + mc.Value, 1);
+                    Console.WriteLine(strNewFileName);
+                    File.Move(NextFile.FullName, Path.Combine(NextFile.Directory.FullName, strNewFileName));
+                }
+                else
+                {
+                    File.Move(NextFile.FullName, Path.GetFileNameWithoutExtension(NextFile.FullName));
+                }
 
-            //}
+            }
 
             foreach (FileInfo NextFile in TheFolder.GetFiles().OrderBy(f => f.Name))
             {
@@ -61,7 +61,7 @@ namespace ConsoleAppTest.Rick
 
         }
 
-        
+       
 
     }
 }
