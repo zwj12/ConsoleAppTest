@@ -16,7 +16,7 @@ namespace ConsoleAppTest.Rick
 
         public static void SortFilesByName()
         {
-            DirectoryInfo TheFolder = new DirectoryInfo(@"E:\人体大冒险");
+            DirectoryInfo TheFolder = new DirectoryInfo(@"E:\三国演义");
             DirectoryInfo NewFolder = Directory.CreateDirectory(@"E:\MP3New");
 
             foreach (FileInfo NextFile in TheFolder.GetFiles())
