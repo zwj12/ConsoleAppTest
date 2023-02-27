@@ -16,7 +16,7 @@ namespace ConsoleAppTest.Rick
 
         public static void SortFilesByName()
         {
-            DirectoryInfo TheFolder = new DirectoryInfo(@"E:\三国演义");
+            DirectoryInfo TheFolder = new DirectoryInfo(@"E:\草房子");
             DirectoryInfo NewFolder = Directory.CreateDirectory(@"E:\MP3New");
 
             foreach (FileInfo NextFile in TheFolder.GetFiles())
@@ -25,19 +25,19 @@ namespace ConsoleAppTest.Rick
                 Match mc = reg.Match(NextFile.Name);
                 if (mc.Length == 1)
                 {
-                    strNewFileName = reg.Replace(NextFile.Name, "000" + mc.Value, 1);
+                    strNewFileName = reg.Replace(NextFile.Name, "100" + mc.Value, 1);
                     Console.WriteLine(strNewFileName);
                     File.Move(NextFile.FullName, Path.Combine(NextFile.Directory.FullName, strNewFileName));
                 }
                 else if (mc.Length == 2)
                 {
-                    strNewFileName = reg.Replace(NextFile.Name, "00" + mc.Value, 1);
+                    strNewFileName = reg.Replace(NextFile.Name, "10" + mc.Value, 1);
                     Console.WriteLine(strNewFileName);
                     File.Move(NextFile.FullName, Path.Combine(NextFile.Directory.FullName, strNewFileName));
                 }
                 else if (mc.Length == 3)
                 {
-                    strNewFileName = reg.Replace(NextFile.Name, "0" + mc.Value, 1);
+                    strNewFileName = reg.Replace(NextFile.Name, "1" + mc.Value, 1);
                     Console.WriteLine(strNewFileName);
                     File.Move(NextFile.FullName, Path.Combine(NextFile.Directory.FullName, strNewFileName));
                 }

@@ -1,32 +1,26 @@
-﻿using ConsoleAppTest.Socket;
+﻿using ConsoleAppTest.Rick;
+using ConsoleAppTest.Socket;
+using ConsoleAppTest.Zip;
+using Ionic.Zip;
 using System;
+using System.IO;
+using System.Linq;
 using System.Net;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ConsoleAppTest
 {
     public class A
     {
-        public A()
+        private A()
         {
 
         }
 
-        public string str = "A";
-    }
+        public static string str = "A";
 
-    public static class B
-    {
-        public static string Getstr(this A @this)
-        {
-            return @this.str;
-        }
-
-        public static A A(this A @this, string str1)
-        {
-            Console.WriteLine(@this.Getstr());
-            @this.str = "AAA";
-            return @this;
-        }
+        public static string MyProperty { get; set; }
     }
 
     enum weekday
@@ -35,30 +29,32 @@ namespace ConsoleAppTest
         tuesday = 2,
     }
 
+
     public class Program
     {
         public static void Main(string[] args)
         {
-            //SortFile.SortFilesByName();
+            string solutionDir = @"C:\PMTWTempFiles\PMPP\Solutions\SolutionOneRobotRW6";
+            string packPath = @"C:\PMTWTempFiles\PMPP\PackedSolutions\SolutionOneRobotRW6.rspag";
 
-            IPAddress iPAddress = IPAddress.Parse("127.0.0.1");
-            IPEndPoint remoteEP = new IPEndPoint(iPAddress, 3008);
-            SocketClient.Connect(remoteEP);
-            UInt32 robotStatus = SocketClient.GetRobotStatus();
-            if(robotStatus == 0 )
+            try
             {
-                SocketClient.ClearData();
-                SocketClient.SendData();
-                SocketClient.Start();
-                Console.WriteLine("Start robot");
+                ZipHelper zipHelper= new ZipHelper();
+                zipHelper.Pack(solutionDir, packPath);
+                zipHelper.Unpack(packPath, solutionDir);
+
             }
-            else
+            catch (Exception ex)
             {
-                Console.WriteLine("Robot is busy, trying to stop robot");
-                SocketClient.Stop();
+                Console.WriteLine(ex.Message);
             }
           
-            SocketClient.Close();
+
+
+
+            //SortFile.SortFilesByName();
+
+
             Console.ReadKey();
 
         }
@@ -67,5 +63,5 @@ namespace ConsoleAppTest
     }
 
 
-
 }
+
