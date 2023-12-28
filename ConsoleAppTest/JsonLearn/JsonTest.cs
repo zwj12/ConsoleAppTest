@@ -36,6 +36,7 @@ namespace ConsoleAppTest.JsonLearn
         public DateTimeOffset Date { get; set; }
         public int TemperatureCelsius { get; set; }
         public string Summary { get; set; }
+        public double d { get; set; } = 0.369;
 
         private Pos referencePointX = new Pos(1, 2, 3);
         public Pos ReferencePointX

@@ -40,6 +40,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -51,6 +52,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
@@ -182,8 +184,8 @@
     <Reference Include="MongoDB.Libmongocrypt, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MongoDB.Libmongocrypt.1.0.0\lib\net452\MongoDB.Libmongocrypt.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.7.6\lib\net45\NLog.dll</HintPath>
@@ -351,11 +353,15 @@
     <Compile Include="Encryption\AESEncryption.cs" />
     <Compile Include="Encryption\Certificate.cs" />
     <Compile Include="Encryption\CertInfo.cs" />
+    <Compile Include="Encryption\EncryptionService.cs" />
+    <Compile Include="Encryption\IEncryptionService.cs" />
+    <Compile Include="Encryption\NativeCredMan.cs" />
     <Compile Include="ImageContourExtraction\ICETest.cs" />
     <Compile Include="Interop\InteropTest.cs" />
     <Compile Include="Interview\A.cs" />
     <Compile Include="Interview\X.cs" />
     <Compile Include="JsonLearn\JsonTest.cs" />
+    <Compile Include="Language\LanguageType.cs" />
     <Compile Include="Lock\LockAsync.cs" />
     <Compile Include="Lock\LockTest.cs" />
     <Compile Include="Log\Bar.cs" />
