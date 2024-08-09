@@ -1,12 +1,7 @@
-﻿using ConsoleAppTest.JsonLearn;
-using Org.BouncyCastle.Ocsp;
-using System;
-using System.IO.Pipes;
+﻿using System;
 using System.IO;
 using System.Net;
-using System.Security.Principal;
-using System.Text.RegularExpressions;
-using System.Xml.Linq;
+using System.Runtime.Caching;
 
 namespace ConsoleAppTest
 {
@@ -14,12 +9,12 @@ namespace ConsoleAppTest
     public class Program
     {
 
-
         public static void Main(string[] args)
         {
+            DirectoryInfo value = null;
+            value = Directory.CreateDirectory(@"");
 
             Console.ReadKey();
-
         }
 
 
