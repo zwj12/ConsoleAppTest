@@ -8,7 +8,7 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>ConsoleAppTest</RootNamespace>
     <AssemblyName>ConsoleAppTest</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <NuGetPackageImportStamp>
@@ -373,6 +373,7 @@
     <Compile Include="ImageContourExtraction\Gradient.cs" />
     <Compile Include="Log\SystemTrace.cs" />
     <Compile Include="Log\SystemTraceSource.cs" />
+    <Compile Include="MarshalInterop\MarshalHelper.cs" />
     <Compile Include="MongoDBLearn\MongoDBTest.cs" />
     <Compile Include="MultiThread\ThreadA.cs" />
     <Compile Include="OPCUA\OPCUARobot.cs" />
