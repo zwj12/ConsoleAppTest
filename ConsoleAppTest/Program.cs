@@ -53,14 +53,65 @@ namespace ConsoleAppTest
             public Int32 no_of_cnv_stops;
         }
 
+        public enum ItmsrcTriggerType
+        {
+            TRIGGER_NOT_USED,
+            TRIGGER_TYPE_DISTANCE,
+            TRIGGER_TYPE_IO,
+        }
+
+        public enum ItmsrcSourceTypes
+        {
+            ITMSRC_UNDEFINED_TYPE = 0,
+            ITMSRC_PICK_TYPE,
+            ITMSRC_PLACE_TYPE
+        }
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 4)]
+        public struct ItmsrcSetupDataParam
+        {
+            public ItemSourceMessageVersion version;
+            public ItmsrcTriggerType trigger_type;
+            public bool log_used;
+            public Int32 trigg_distance;
+            public bool cnv_start_stop_limits_used;
+            public Int32 work_area_enter;
+            public Int32 work_area_exit;
+            public Int32 cnv_stop_limit;
+            public Int32 cnv_start_limit;
+            public ItmsrcSourceTypes source_type;
+            public float itmtgt_tune_x;
+            public float itmtgt_tune_y;
+            public float itmtgt_tune_z;
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
+            public char[] pos_gen_trig_eio_name;
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
+            public char[] trig_eio_name;
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
+            public char[] strobe_eio_name;
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
+            public char[] rob_exe_eio_name;
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
+            public char[] queue_idle_eio_name;
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
+            public char[] pos_available_eio_name;
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 20)]
+            public char[] convey_name;
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
+            public char[] cnv_control_eio_name;
+        }
         public static void Main(string[] args)
         {
-            ItmsrcStatisticsDataV2 itmsrcStatisticsData = new ItmsrcStatisticsDataV2();
-            ItmsrcContainerStatistics itmsrcContainerStatistics= new ItmsrcContainerStatistics();
-            ItmsrcItemStatisticsV2 itmsrcItemStatisticsV2 = new ItmsrcItemStatisticsV2();
+            DateTime PMOPStopTime = DateTime.Now;
+            DateTime PMOPStartTime= DateTime.Now.AddDays(-4);
+
+            TimeSpan sdf = PMOPStopTime - PMOPStartTime;
+
+            Console.WriteLine($"{sdf}");
+
+            //sfdsfdsf
+            ItmsrcSetupDataParam itmsrcStatisticsData = new ItmsrcSetupDataParam();
             int size1 = Marshal.SizeOf(itmsrcStatisticsData);
-            int size2 = Marshal.SizeOf(itmsrcItemStatisticsV2);
-            int size3 = Marshal.SizeOf(itmsrcContainerStatistics);
 
             Console.ReadKey();
         }
