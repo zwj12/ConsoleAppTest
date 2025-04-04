@@ -58,6 +58,9 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=10.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.10.1.1\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="BouncyCastle.Crypto, Version=1.8.9.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
       <HintPath>..\packages\Portable.BouncyCastle.1.8.9\lib\net40\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
@@ -373,6 +376,13 @@
     <Compile Include="ImageContourExtraction\Gradient.cs" />
     <Compile Include="Log\SystemTrace.cs" />
     <Compile Include="Log\SystemTraceSource.cs" />
+    <Compile Include="Mapper\AutoMapperConfiguration.cs" />
+    <Compile Include="Mapper\AutoMapperStartupTask.cs" />
+    <Compile Include="Mapper\MappingExtensions.cs" />
+    <Compile Include="Mapper\Model.cs" />
+    <Compile Include="Mapper\Position.cs" />
+    <Compile Include="Mapper\ViewModel.cs" />
+    <Compile Include="Mapper\WeekDay.cs" />
     <Compile Include="MarshalInterop\MarshalHelper.cs" />
     <Compile Include="MongoDBLearn\MongoDBTest.cs" />
     <Compile Include="MultiThread\ThreadA.cs" />

@@ -1,5 +1,7 @@
-﻿using System;
+﻿using ConsoleAppTest.Mapper;
+using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
@@ -13,108 +15,69 @@ namespace ConsoleAppTest
 
     public static class Program
     {
-        public enum ItemSourceMessageVersion
+        public static string TestMethod(int callDuration, out int threadId)
         {
-            ITMSRC_MESSAGE_VERSION_1 = 1,
-            ITMSRC_MESSAGE_VERSION_2,
-            ITMSRC_MESSAGE_VERSION_3,
-            ITMSRC_MESSAGE_VERSION_4,
+            Console.WriteLine("Test method begins.");
+            Thread.Sleep(callDuration);
+            threadId = Thread.CurrentThread.ManagedThreadId;
+            return String.Format("My call time was {0}.", callDuration.ToString());
         }
 
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 4)]
-        public struct ItmsrcItemStatisticsV2
+        public delegate string AsyncMethodCaller(int callDuration, out int threadId);
+
+       
+
+        static async Task Main(string[] args)
         {
-            public bool used;
-            public Int32 item_type;
-            public Int32 no_of_used;
-            public Int32 no_of_skipped;
-            public Int32 overflow;
-            public Int32 total_overflow;
-            public Int32 incoming;
-            public Int32 total_incoming;
-        }
+            Model model = new Model
+            {
+                SomeValue = 100,
+                AnotherValue = "10001"
+            };
+            model.Position.X = 10;
+            model.Position.Y = 20;
+            model.Position.Z = 30;
 
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 4)]
-        public struct ItmsrcContainerStatistics
-        {
-            public Int32 no_of_completed;
-            public Int32 no_of_incompleted;
-        }
+            AutoMapperStartupTask auto = new AutoMapperStartupTask();
+            auto.Execute();
 
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 4)]
-        public struct ItmsrcStatisticsDataV2
-        {
-            public ItemSourceMessageVersion version;
-            public Int64 ct_time;
-            public Int32 itmtgt_number;
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 20)]
-            public ItmsrcItemStatisticsV2[] item_stat;
-            public ItmsrcContainerStatistics container_stat;
-            public Int32 no_of_cnv_stops;
-        }
+            ViewModel viewModel = MappingExtensions.ToViewModel(model);
 
-        public enum ItmsrcTriggerType
-        {
-            TRIGGER_NOT_USED,
-            TRIGGER_TYPE_DISTANCE,
-            TRIGGER_TYPE_IO,
-        }
 
-        public enum ItmsrcSourceTypes
-        {
-            ITMSRC_UNDEFINED_TYPE = 0,
-            ITMSRC_PICK_TYPE,
-            ITMSRC_PLACE_TYPE
-        }
+            Console.WriteLine($"model={model}");
+            Console.WriteLine($"viewModel={viewModel}");
 
-        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 4)]
-        public struct ItmsrcSetupDataParam
-        {
-            public ItemSourceMessageVersion version;
-            public ItmsrcTriggerType trigger_type;
-            public bool log_used;
-            public Int32 trigg_distance;
-            public bool cnv_start_stop_limits_used;
-            public Int32 work_area_enter;
-            public Int32 work_area_exit;
-            public Int32 cnv_stop_limit;
-            public Int32 cnv_start_limit;
-            public ItmsrcSourceTypes source_type;
-            public float itmtgt_tune_x;
-            public float itmtgt_tune_y;
-            public float itmtgt_tune_z;
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-            public char[] pos_gen_trig_eio_name;
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-            public char[] trig_eio_name;
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-            public char[] strobe_eio_name;
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-            public char[] rob_exe_eio_name;
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-            public char[] queue_idle_eio_name;
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-            public char[] pos_available_eio_name;
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 20)]
-            public char[] convey_name;
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-            public char[] cnv_control_eio_name;
-        }
-        public static void Main(string[] args)
-        {
-            DateTime PMOPStopTime = DateTime.Now;
-            DateTime PMOPStartTime= DateTime.Now.AddDays(-4);
+            model.SomeValue = 56;
+            model.Day = WeekDay.Wednesday;
+            model.Position.Z = 40;
 
-            TimeSpan sdf = PMOPStopTime - PMOPStartTime;
+            Console.WriteLine($"model={model}");
+            Console.WriteLine($"viewModel={viewModel}");
 
-            Console.WriteLine($"{sdf}");
+            Model model2 = MappingExtensions.ToModel(viewModel);
 
-            //sfdsfdsf
-            ItmsrcSetupDataParam itmsrcStatisticsData = new ItmsrcSetupDataParam();
-            int size1 = Marshal.SizeOf(itmsrcStatisticsData);
+            Console.WriteLine($"model={model2}");
+            Console.WriteLine($"viewModel={viewModel}");
+
 
             Console.ReadKey();
         }
+
+        //public static void Main(string[] args)
+        //{
+        //    DateTime PMOPStopTime = DateTime.Now;
+        //    DateTime PMOPStartTime= DateTime.Now.AddDays(-4);
+
+        //    TimeSpan sdf = PMOPStopTime - PMOPStartTime;
+
+        //    Console.WriteLine($"{sdf}");
+
+        //    //sfdsfdsf
+        //    ItmsrcSetupDataParam itmsrcStatisticsData = new ItmsrcSetupDataParam();
+        //    int size1 = Marshal.SizeOf(itmsrcStatisticsData);
+
+        //    Console.ReadKey();
+        //}
 
      
 
