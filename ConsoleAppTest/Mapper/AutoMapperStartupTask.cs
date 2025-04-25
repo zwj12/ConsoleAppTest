@@ -8,9 +8,16 @@ namespace ConsoleAppTest.Mapper
 {
     public class AutoMapperStartupTask
     {
+        private readonly IServiceProvider _serviceProvider;
+
+        public AutoMapperStartupTask(IServiceProvider serviceProvider)
+        {
+            _serviceProvider = serviceProvider;
+        }
+
         public void Execute()
         {
-            AutoMapperConfiguration.Init();
+            AutoMapperConfiguration.Init(_serviceProvider);
         }
     }
 }

@@ -19,15 +19,23 @@ namespace ConsoleAppTest.Mapper
         }
 
         #region     
-        public static ViewModel ToViewModel(this Model entity)
-        {
-            return entity.MapTo<Model, ViewModel>();
-        }
+        //public static ViewModel ToViewModel(this Model entity)
+        //{
+        //    //return entity.MapTo<Model, ViewModel>();
+        //    return AutoMapperConfiguration.Mapper.Map<Model, ViewModel>(entity);
+        //}
 
-        public static Model ToModel(this ViewModel model)
-        {
-            return model.MapTo<ViewModel, Model>();
-        }
+        //public static ViewModel ToViewModel(this Model entity, ViewModel viewModel)
+        //{
+        //    //return entity.MapTo<Model, ViewModel>(viewModel);
+        //    return AutoMapperConfiguration.Mapper.Map<Model, ViewModel>(entity, viewModel);
+        //}
+
+        //public static Model ToModel(this ViewModel model)
+        //{
+        //    //return model.MapTo<ViewModel, Model>();
+        //    return AutoMapperConfiguration.Mapper.Map<ViewModel, Model>(model);
+        //}
         #endregion
     }
 }

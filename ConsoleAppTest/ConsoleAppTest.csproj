@@ -380,6 +380,7 @@
     <Compile Include="Mapper\AutoMapperStartupTask.cs" />
     <Compile Include="Mapper\MappingExtensions.cs" />
     <Compile Include="Mapper\Model.cs" />
+    <Compile Include="Mapper\MyService.cs" />
     <Compile Include="Mapper\Position.cs" />
     <Compile Include="Mapper\ViewModel.cs" />
     <Compile Include="Mapper\WeekDay.cs" />
